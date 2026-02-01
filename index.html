@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Dashboard Informasi Guru Internal Terpadu Al-Kautsar</title>
+    <style>
+        /* Reset dasar */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            /* Latar belakang nuansa teknologi gelap */
+            background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Elemen dekoratif latar belakang (lingkaran cahaya) */
+        .circle {
+            position: absolute;
+            border-radius: 50%;
+            background: linear-gradient(to right, #00c6ff, #0072ff);
+            opacity: 0.4;
+            filter: blur(80px);
+            z-index: 0;
+        }
+        .c1 { width: 300px; height: 300px; top: 10%; left: 20%; }
+        .c2 { width: 250px; height: 250px; bottom: 10%; right: 20%; background: linear-gradient(to right, #7f00ff, #e100ff); }
+
+        /* Wadah Login (Efek Glassmorphism) */
+        .login-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 40px;
+            width: 400px;
+            text-align: center;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+            color: #fff;
+        }
+
+        /* Wadah Logo Baru */
+        .logo-container {
+            margin: 0 auto 20px;
+            text-align: center;
+        }
+        
+        /* Gaya Gambar Logo */
+        .logo-img {
+            width: 80px;
+            height: 80px;
+            object-fit: contain; /* Menjaga proporsi gambar */
+            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5)); /* Efek cahaya pada logo */
+        }
+
+        h2 {
+            margin-bottom: 5px;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+        
+        p.subtitle {
+            font-size: 0.9em;
+            color: #ddd;
+            margin-bottom: 30px;
+        }
+
+        /* Input Form */
+        .input-group {
+            position: relative;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.9em;
+            color: #b0c4de;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 1em;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .input-group input:focus {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: #00c6ff;
+            box-shadow: 0 0 10px rgba(0, 198, 255, 0.3);
+        }
+
+        /* Tombol Login */
+        .btn-login {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(to right, #00c6ff, #0072ff);
+            border: none;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 10px;
+        }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 198, 255, 0.4);
+        }
+
+        /* Footer kecil */
+        .footer {
+            margin-top: 20px;
+            font-size: 0.8em;
+            color: rgba(255, 255, 255, 0.5);
+        }
+        
+        /* Pesan Error */
+        #error-msg {
+            color: #ff6b6b;
+            font-size: 0.9em;
+            margin-top: 10px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="circle c1"></div>
+    <div class="circle c2"></div>
+
+    <div class="login-container">
+        <div class="logo-container">
+            <img src="logosmpit.png" alt="Logo SMPIT" class="logo-img">
+        </div>
+
+        <h2>Dashboard Informasi Guru Internal Terpadu Al-Kautsar</h2>
+        <p class="subtitle">SMPIT Al-Kautsar Mukomuko</p>
+
+        <form id="loginForm">
+            <div class="input-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" placeholder="Masukkan username" required>
+            </div>
+            
+            <div class="input-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="Masukkan password" required>
+            </div>
+
+            <button type="submit" class="btn-login">MASUK PORTAL</button>
+            <p id="error-msg">Username atau Password salah!</p>
+        </form>
+
+        <div class="footer">
+            &copy; 2026 <span>aktechmaster</span> <br> Designed & Developed by aktechmaster
+        </div>
+    </div>
+
+    <script>
+        // =======================================================
+        // KONFIGURASI PENTING
+        // =======================================================
+        // Tempel URL Web App Script Anda di sini (yang berakhiran /exec)
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxwcnnV-yyqDxS8ta07bUhKXSKPfzwCB5UpFb5yOPrk-_g3arItbyKD9ugqvKUh9wFRNA/exec"; 
+        
+        // Variabel untuk menampung data dari Sheet
+        let databaseGuru = []; 
+        const btnLogin = document.querySelector('.btn-login');
+
+        // 1. SAAT HALAMAN DIBUKA, AMBIL DATA TERBARU DARI SHEET
+        window.onload = async function() {
+            try {
+                // Matikan tombol login dulu biar user gak buru-buru
+                btnLogin.innerHTML = "Memuat Data...";
+                btnLogin.disabled = true;
+                btnLogin.style.opacity = "0.7";
+
+                // Minta data ke Code.gs
+                const response = await fetch(SCRIPT_URL);
+                const data = await response.json();
+
+                // Simpan data 'users' dari Code.gs ke variabel lokal
+                // Code.gs mengirim format: { username: "...", password: "...", nama: "..." }
+                if (data.users) {
+                    databaseGuru = data.users;
+                    console.log("Data Guru Berhasil Dimuat:", databaseGuru.length, "orang");
+                    
+                    // Nyalakan tombol login
+                    btnLogin.innerHTML = "MASUK PORTAL";
+                    btnLogin.disabled = false;
+                    btnLogin.style.opacity = "1";
+                }
+
+            } catch (error) {
+                console.error("Gagal ambil data:", error);
+                btnLogin.innerHTML = "Gagal Koneksi Server";
+                alert("Gagal mengambil data database! Pastikan internet lancar atau URL Script benar.");
+            }
+        };
+
+        // 2. LOGIKA LOGIN (Sama seperti sebelumnya, tapi pakai data dinamis)
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault(); 
+            
+            const inputUser = document.getElementById('username').value.trim(); // Hapus spasi gak sengaja
+            const inputPass = document.getElementById('password').value;
+            const errorMsg = document.getElementById('error-msg');
+
+            // Cek apakah data sudah terdownload
+            if (databaseGuru.length === 0) {
+                alert("Data guru belum selesai dimuat. Tunggu sebentar...");
+                return;
+            }
+
+            // PENTING: Sesuaikan nama key dengan yang dikirim Code.gs 
+            // (Code.gs mengirim: username & password, bukan user & pass)
+            const guruDitemukan = databaseGuru.find(g => 
+                g.username.toLowerCase() === inputUser.toLowerCase() && // Username tidak case-sensitive
+                String(g.password) === String(inputPass) // Password harus sama persis (case-sensitive)
+            );
+
+            if (guruDitemukan) {
+                // SUKSES
+                localStorage.setItem('namaGuru', guruDitemukan.nama);
+                
+                // Animasi tombol sukses
+                btnLogin.innerHTML = "Berhasil Masuk...";
+                btnLogin.style.background = "linear-gradient(to right, #11998e, #38ef7d)";
+                
+                // Redirect setelah 1 detik
+                setTimeout(() => {
+                    window.location.href = 'dashboard.html';
+                }, 1000);
+
+            } else {
+                // GAGAL
+                errorMsg.style.display = 'block';
+                document.querySelector('.login-container').style.animation = "shake 0.5s";
+                setTimeout(() => { document.querySelector('.login-container').style.animation = "none"; }, 500);
+            }
+        });
+    </script>
+
+</body>
+
+</html>
