@@ -1,0 +1,1568 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Informasi Guru Internal Terpadu Al-Kautsar</title>
+    <link rel="icon" type="image/png" href="logosmpit.png">
+    <link rel="shortcut icon" type="image/png" href="logosmpit.png">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        
+        body { 
+            background: #f0f2f5; 
+            min-height: 100vh; 
+        }
+
+        /* Navbar - Bright Green Version */
+.navbar {
+    /* PERUBAHAN DI SINI: */
+    /* Mengganti gradasi gelap menjadi gradasi hijau cerah yang sama dengan Welcome Card */
+    background: linear-gradient(to right, rgba(16, 185, 129, 0.9), rgba(52, 211, 153, 0.9));
+    
+    color: white;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    position: relative;
+}
+
+/* Bagian bawah ini tidak berubah */
+.navbar .brand {
+    font-size: 1.2em;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.navbar-logo {
+    width: 30px;
+    height: 30px;
+    object-fit: contain;
+    background: white;
+    border-radius: 50%;
+}
+        /* === NEW: STYLE UNTUK MENU DROPDOWN (GARIS TIGA) === */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropbtn {
+            background-color: transparent;
+            color: white;
+            padding: 10px;
+            font-size: 24px;
+            border: none;
+            cursor: pointer;
+            transition: 0.3s;
+            border-radius: 5px;
+            line-height: 1;
+        }
+
+        .dropbtn:hover, .dropbtn:focus {
+            background-color: rgba(255,255,255,0.2);
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            background-color: #fff;
+            min-width: 200px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1001;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-top: 10px;
+            animation: fadeIn 0.2s;
+        }
+
+        /* Animasi muncul halus */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .dropdown-content a {
+            color: #333;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            font-size: 0.95em;
+            border-bottom: 1px solid #f1f1f1;
+            transition: 0.2s;
+        }
+
+        .dropdown-content a:last-child { border-bottom: none; }
+        .dropdown-content a:hover { background-color: #f1f1f1; color: #00c6ff; }
+        
+        /* Tampilkan menu saat class 'show' ditambahkan via JS */
+        .show { display: block; }
+
+        /* Container */
+        .container {
+            padding: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Welcome Card - Green Version */
+.welcome-card {
+    background: white;
+    border-radius: 15px;
+    padding: 40px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+    /* Gambar latar belakang tetap sama */
+    background-image: url('https://img.freepik.com/free-vector/abstract-blue-geometric-shapes-background_1035-17545.jpg');
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    color: white;
+    overflow: hidden;
+    margin-bottom: 30px;
+}
+
+.welcome-card::before {
+    content: ''; 
+    position: absolute; 
+    top: 0; 
+    left: 0; 
+    right: 0; 
+    bottom: 0;
+    /* PERUBAHAN DI SINI: */
+    /* Mengubah overlay gelap menjadi Gradasi Hijau Cerah */
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.9), rgba(52, 211, 153, 0.9));
+    /* Opsi tambahan: mix-blend-mode membantu menyatukan warna hijau dengan tekstur gambar asli */
+    mix-blend-mode: multiply; 
+    z-index: 1;
+}
+
+        .welcome-content { position: relative; z-index: 2; }
+        
+        /* Typography Header */
+        h1.welcome-title { font-size: 2em; margin-bottom: 5px; font-weight: 400; }
+        h1.guru-name { font-size: 2.2em; margin-bottom: 15px; color: #00c6ff; font-weight: 700; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
+        
+        /* STYLE TAMBAHAN UNTUK JABATAN & STATUS */
+        .info-jabatan {
+            font-size: 1.2em;
+            color: #e0f7fa;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+        .info-status {
+            font-size: 1em;
+            color: #b2ebf2;
+            margin-bottom: 20px;
+            background: rgba(255,255,255,0.1);
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+        }
+
+        /* Style untuk Tanggal di Navbar */
+        .navbar-date {
+            color: #ffeb3b; /* Kuning cerah */
+            font-size: 1em;
+            font-weight: 600;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+            /* Agar posisinya pas di tengah layar jika layar lebar */
+            position: absolute; 
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        /* PENTING: Sembunyikan tanggal jika dibuka di HP (Layar kecil) agar tidak berantakan */
+        @media (max-width: 768px) {
+            .navbar-date {
+                display: none;
+            }
+        }
+
+        p.footer-info { margin-top: 10px; opacity: 0.7; font-size: 0.9em; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 15px; }
+
+        /* Grid Menu */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .menu-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s;
+            cursor: pointer;
+            border-bottom: 4px solid #00c6ff;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-height: 170px;
+        }
+
+        .menu-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        .menu-card h3 { color: #333; margin-bottom: 10px; }
+        .menu-card p { color: #666; font-size: 0.9em; }
+
+        /* Khusus Kartu Laporan (Beda Warna) */
+        .card-laporan { border-bottom: 4px solid #ff9f43; }
+        .card-laporan h3 { color: #e67e22; }
+        
+        /* Khusus Kartu Biodata (Beda Warna) */
+        .card-biodata { border-bottom: 4px solid #2ecc71; }
+        .card-biodata h3 { color: #27ae60; }
+
+        /* MODAL POPUP STYLE */
+        .modal {
+            display: none; 
+            position: fixed; 
+            z-index: 100; 
+            left: 0; top: 0; 
+            width: 100%; height: 100%; 
+            background-color: rgba(0,0,0,0.6); 
+            backdrop-filter: blur(5px);
+            overflow-y: auto; 
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto; 
+            padding: 30px;
+            border-radius: 15px;
+            width: 90%; 
+            max-width: 700px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            animation: slideDown 0.3s ease-out;
+            position: relative;
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 15px; }
+        .close-btn { color: #aaa; font-size: 28px; font-weight: bold; cursor: pointer; }
+        .close-btn:hover { color: #000; }
+
+        /* Tampilan Data Laporan */
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+        .stat-label { font-weight: 600; color: #555; }
+        .stat-value { font-weight: bold; color: #2c3e50; font-size: 1.1em; }
+        
+        /* Bar Progress Sederhana */
+        .progress-bg { width: 100%; height: 8px; background: #e0e0e0; border-radius: 4px; margin-top: 5px; overflow: hidden;}
+        .progress-fill { height: 100%; background: #00c6ff; width: 0%; transition: width 1s ease-in-out; }
+        
+        /* Table Style untuk Biodata */
+        .bio-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        .bio-table tr {
+            border-bottom: 1px solid #eee;
+        }
+        .bio-table tr:last-child {
+            border-bottom: none;
+        }
+        .bio-table td {
+            padding: 12px 5px;
+            font-size: 0.95em;
+        }
+        .bio-label {
+            font-weight: 600;
+            color: #555;
+            width: 40%;
+        }
+        .bio-val {
+            color: #333;
+            width: 60%;
+        }
+
+        /* === LOADING OVERLAY ANIMATION === */
+        #loading-overlay {
+            position: fixed;
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85); /* Latar belakang gelap transparan */
+            z-index: 9999; /* Pastikan di paling atas */
+            display: none; /* Default sembunyi */
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            backdrop-filter: blur(4px); /* Efek blur estetik */
+        }
+
+        .spinner {
+            width: 60px; 
+            height: 60px;
+            border: 6px solid rgba(255, 255, 255, 0.2);
+            border-top: 6px solid #00c6ff; /* Warna Biru sesuai tema dashboard */
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+
+        .loading-text {
+            font-size: 1.1em;
+            letter-spacing: 1px;
+            font-weight: 300;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* === FOOTER STYLE === */
+        .footer {
+            text-align: center;
+            padding: 25px 10px;
+            color: #888; /* Warna abu-abu agar tidak terlalu mencolok */
+            font-size: 0.85em;
+            margin-top: 40px; /* Jarak dari menu di atasnya */
+            border-top: 1px solid rgba(0,0,0,0.05); /* Garis tipis pemisah */
+        }
+        
+        /* === STYLE FOTO PROFIL === */
+        .profile-container {
+            position: absolute;
+            top: 30px;            /* Jarak dari atas */
+            right: 30px;          /* Jarak dari kanan */
+            width: 100px;         /* Lebar lingkaran */
+            height: 100px;        /* Tinggi lingkaran */
+            border-radius: 50%;   /* Membuat jadi bulat */
+            border: 4px solid rgba(255, 255, 255, 0.4); /* Garis pinggir transparan */
+            overflow: hidden;     /* Memotong gambar yang keluar jalur */
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            z-index: 10;
+            background: #fff;
+        }
+
+        .profile-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;    /* Agar foto penuh tanpa gepeng */
+            object-position: top center; /* Fokus ke bagian atas (wajah) */
+        }
+
+        /* --- PERBAIKAN RESPONSIF HP --- */
+        @media (max-width: 768px) {
+            .welcome-card {
+                text-align: center;
+                padding-top: 30px; 
+            }
+
+            .profile-container {
+                position: relative; 
+                top: auto;
+                right: auto;
+                margin: 0 auto 20px auto; 
+                width: 80px; 
+                height: 80px;
+                border-width: 3px; 
+            }
+
+            .welcome-content {
+                text-align: center;
+            }
+            
+            h1.guru-name {
+                font-size: 1.8em;
+            }
+        }
+
+        /* === POPUP INFO CANTIK (PENGGANTI ALERT) === */
+.custom-popup {
+    display: none;
+    position: fixed;
+    z-index: 2000; /* Paling atas */
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0,0,0,0.5); /* Gelap transparan */
+    backdrop-filter: blur(3px); /* Efek blur estetik */
+    align-items: center; /* Tengah vertikal */
+    justify-content: center; /* Tengah horizontal */
+}
+
+.popup-box {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+    width: 90%;
+    max-width: 350px;
+    animation: popUpAnim 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes popUpAnim {
+    from { transform: scale(0.5); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+.popup-icon-box {
+    font-size: 50px;
+    margin-bottom: 10px;
+}
+
+.btn-popup-ok {
+    background: #00c6ff;
+    border: none;
+    padding: 10px 30px;
+    color: white;
+    border-radius: 25px;
+    font-size: 1em;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: 0.3s;
+    font-weight: bold;
+    box-shadow: 0 5px 15px rgba(0, 198, 255, 0.3);
+}
+
+.btn-popup-ok:hover {
+    background: #0072ff;
+    transform: translateY(-2px);
+}
+
+    </style>
+</head>
+<body>
+
+    <div id="loading-overlay">
+        <div class="spinner"></div>
+        <div class="loading-text">Sedang memproses...</div>
+    </div>
+
+    <div class="navbar">
+        <div class="brand">
+            <img src="logosmpit.png" alt="Logo" class="navbar-logo">
+            SMPIT Al-Kautsar
+        </div>
+
+        <div id="display-tanggal" class="navbar-date"></div>
+
+        <div class="dropdown">
+            <button onclick="toggleMenu()" class="dropbtn">&#9776;</button>
+            <div id="myDropdown" class="dropdown-content">
+    <a href="#" onclick="manualRefresh()">🔄 Refresh Data</a>
+    <a href="#" onclick="showPopup('Tentang Aplikasi', 'DIGITAL v1.0\nDeveloped by aktechmaster', '👨‍💻')">ℹ️ Tentang</a>
+    
+    <a href="#" onclick="bukaModalPassword()">🔑 Ubah Password</a>
+    <a href="#" onclick="logout()" style="color: #e74c3c; font-weight: bold;">🚪 Logout</a>
+</div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="welcome-card">
+            <div class="profile-container">
+                <img id="dash-foto" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Foto Profil" class="profile-img">
+            </div>
+
+            <div class="welcome-content">
+                <h1 class="welcome-title">Selamat Datang,</h1>
+                <h1 id="nama-guru" class="guru-name">Loading...</h1>
+                <p id="dash-nip" class="info-jabatan" style="margin-bottom: 5px;">...</p>
+                <div id="header-info-container">
+                     <p id="dash-jabatan" class="info-jabatan">...</p>
+                </div>
+                <p class="footer-info">Dashboard Informasi Guru Internal Terpadu Al-Kautsar</p>
+            </div>
+        </div>
+
+        <div class="menu-grid">
+            <div class="menu-card" onclick="window.open('https://aktechmaster.github.io/Jurnal-Mengajar-Harian-New/')">
+                <h3>📅 Jurnal Harian</h3>
+                <p>Klik untuk input jurnal harian KBM.</p>
+            </div>
+        
+        <div id="menu-t2q" class="menu-card" onclick="window.open('https://aktechmaster.github.io/Jurnal-T2Q-Al-Kausar/')">
+                <h3>📖 Jurnal T2Q</h3>
+                <p>Klik untuk input perkembangan Tahsin & Tahfidz.</p>
+            </div>
+
+         <div class="menu-card" onclick="bukaJadwalMengajar()">
+            <div class="icon-container" style="background: #e1f5fe; color: #0288d1;">
+            <i class="fas fa-chalkboard-teacher"></i>
+            </div>
+            <h3>⌚ Jadwal Mengajar</h3>
+            <p>Cek jadwal KBM Anda hari ini.</p>
+        </div>
+            
+            <div id="menu-absensi-siswa" class="menu-card" style="display: none;" onclick="cekAksesAbsensi()">
+                <h3>📝 Absensi Siswa</h3>
+                <p>Rekap kehadiran siswa.</p>
+            </div>
+            
+            <div class="menu-card card-laporan" onclick="bukaLaporan()">
+                <h3>📊 Laporan Kinerja</h3>
+                <p>Klik untuk melihat statistik: Jurnal, Piket, dan Absensi.</p>
+            </div>
+
+            <div class="menu-card card-biodata" onclick="bukaBiodata()">
+                <h3>👤 Biodata Guru</h3>
+                <p>Klik untuk melihat data pribadi & kepegawaian.</p>
+            </div>
+
+            <div id="menu-bpi" class="menu-card" style="display: none;" onclick="window.open('https://aktechmaster.github.io/Jurnal-BPI-Al-Kautsar/')">
+                <h3>☪️ Jurnal BPI</h3>
+                <p>Klik untuk input laporan Bina Pribadi Islam.</p>
+            </div>
+
+            <div id="menu-absensi-karyawan" class="menu-card" style="display: none; text-align: center;" onclick="window.open('https://aktechmaster.github.io/Jurnal-Absensi-Karyawan/')">
+                <div class="icon-container" style="background: #e0f2f1; color: #009688; margin: 0 auto 10px auto;">
+                    <i class="fas fa-user-clock"></i>
+                </div>
+                <h3>📋 Absensi Karyawan</h3>
+                <p>Khusus Waka Kurikulum.</p>
+            </div>
+
+            <div id="menu-input-piket" class="menu-card" style="display: none; text-align: center;" onclick="window.open('https://aktechmaster.github.io/Jurnal-Piket-SMP-IT-Al-Kautsar/')">
+                <div class="icon-container" style="background: #ede7f6; color: #673ab7; margin: 0 auto 10px auto;">
+                    <i class="fas fa-edit"></i>
+                </div>
+                <h3>✍️ Input Piket</h3>
+                <p>Khusus Waka Kurikulum & PMA.</p>
+            </div>
+
+            <div id="menu-laporan-piket" class="menu-card" style="display: none; text-align: center;" onclick="window.open('https://docs.google.com/spreadsheets/d/1CeRiZxxZ5E5z_MLRd2dIYiIpdh5lYOI5mTLpZ4XHgKk/edit?usp=sharing')">
+                <div class="icon-container" style="background: #ede7f6; color: #673ab7; margin: 0 auto 10px auto;">
+                    <i class="fas fa-clipboard-list"></i>
+                </div>
+                <h3>📊 Laporan Piket</h3>
+                <p>Rekap data piket harian.</p>
+            </div>
+
+            <div id="menu-notulen-rapat" class="menu-card" style="display: none;" onclick="window.open('https://aktechmaster.github.io/Notulen-Rapat-SMP-IT-Al-Kautsar/')">
+                <div class="icon-container" style="background: #fff3e0; color: #ff9800;">
+                    <i class="fas fa-file-signature"></i>
+                </div>
+                <h3>📝 Notulen Rapat</h3>
+                <p>Khusus Waka Humas.</p>
+            </div>
+
+        </div>
+    </div>
+
+<style>
+    /* 1. Latar Belakang Redup */
+    #modalLaporan {
+        display: none;
+        position: fixed;
+        z-index: 9999;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0,0,0,0.5); /* Gelap transparan standar */
+        backdrop-filter: blur(3px); /* Blur halus */
+        font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    /* 2. Kotak Modal Utama */
+    .modal-pro {
+        background-color: #ffffff;
+        margin: 5% auto;
+        padding: 0; /* Padding dihandle di dalam header/body */
+        border-radius: 12px;
+        width: 90%;
+        max-width: 750px; /* Lebar ideal untuk laptop */
+        box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        position: relative;
+        overflow: hidden; /* Agar radius border tetap rapi */
+    }
+
+    /* Header Modal */
+    .modal-header-pro {
+        padding: 20px 25px;
+        border-bottom: 1px solid #eee;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #fff;
+    }
+    .modal-title {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #2c3e50;
+        margin: 0;
+    }
+    .close-pro {
+        color: #95a5a6;
+        font-size: 24px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+    .close-pro:hover { color: #e74c3c; }
+
+    /* Body Modal (Area Scroll) */
+    .modal-body-pro {
+        padding: 25px;
+        max-height: 70vh;
+        overflow-y: auto;
+        background-color: #f8f9fa; /* Background abu sangat muda biar kartu kontras */
+    }
+
+    /* 3. Kartu Item (Desain Bersih) */
+    .card-item {
+        background: #fff;
+        border: 1px solid #e1e4e8;
+        border-radius: 8px;
+        padding: 15px 20px;
+        margin-bottom: 15px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+    }
+
+    /* Baris Judul & Nilai (Sejajar) */
+    .item-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 8px;
+    }
+    .item-title {
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: #34495e;
+    }
+    .item-value {
+        font-size: 0.95rem;
+        font-weight: 700;
+        color: #2c3e50;
+    }
+
+    /* Progress Bar */
+    .bar-track {
+        background-color: #ecf0f1;
+        height: 8px; /* Ukuran sleek/tipis */
+        border-radius: 4px;
+        width: 100%;
+        overflow: hidden;
+        margin-bottom: 6px;
+    }
+    .bar-fill {
+        height: 100%;
+        border-radius: 4px;
+        transition: width 0.6s ease;
+    }
+
+    /* Footer Kecil (Sumber Data) */
+    .item-footer {
+        font-size: 0.75rem;
+        color: #95a5a6;
+    }
+
+    /* Scrollbar Cantik */
+    .modal-body-pro::-webkit-scrollbar { width: 8px; }
+    .modal-body-pro::-webkit-scrollbar-track { background: #f1f1f1; }
+    .modal-body-pro::-webkit-scrollbar-thumb { background: #cbd5e0; border-radius: 4px; }
+    .modal-body-pro::-webkit-scrollbar-thumb:hover { background: #a0aec0; }
+
+    /* Helper Colors */
+    .text-green { color: #27ae60; }
+    .text-red { color: #c0392b; }
+    .text-normal { font-size: 1rem; font-weight: 600; color: #333; } /* Font normal request */
+</style>
+
+<div id="modalLaporan" class="modal" style="display:none;"> <div class="modal-pro">
+        
+        <div class="modal-header-pro">
+            <h3 class="modal-title">Laporan Kinerja Guru</h3>
+            <span class="close-pro" onclick="tutupLaporan()">&times;</span>
+        </div>
+
+        <div class="modal-body-pro">
+
+            <div class="card-item">
+                <div class="item-header">
+                    <span class="item-title">Persentase Jurnal Hari ini</span>
+                    <span class="item-value" id="val-jurnal-harian">0%</span> </div>
+                <div class="bar-track">
+                    <div class="bar-fill" id="bar-jurnal-harian" style="width: 0%; background-color: #2ecc71;"></div>
+                </div>
+                <div class="item-footer">Data dari sheet "Jurnal Harian"</div>
+            </div>
+
+            <div class="card-item">
+                <div class="item-header">
+                    <span class="item-title">Progres Jurnal Bulan ini</span>
+                    <span class="item-value" id="val-jurnal-bulanan">0%</span>
+                </div>
+                <div class="bar-track">
+                    <div class="bar-fill" id="bar-jurnal-bulanan" style="width: 0%; background-color: #9b59b6;"></div>
+                </div>
+                <div class="item-footer">Data dari sheet "Jurnal fix"</div>
+            </div>
+
+            <div class="card-item" id="card-status-input" style="display:none; border-left: 4px solid #1abc9c;">
+                <div class="item-header">
+                    <span class="item-title">Status Input Jurnal Kelas</span>
+                    <span class="text-normal" id="status-input-val" style="color: #16a085;">-</span>
+                </div>
+                <div class="item-footer" id="status-input-msg">Belum ada data</div>
+            </div>
+            
+
+            <div class="card-item">
+                <div class="item-header">
+                    <span class="item-title">Ketidakhadiran (1 Tahun)</span>
+                    <span class="text-normal" id="val-absensi">0 Hari</span>
+                </div>
+                <div class="item-footer">Data dari sheet "Absensi"</div>
+            </div>
+
+           <div class="card-item">
+                <div class="item-header">
+                    <span class="item-title">Rekap Piket</span>
+            <div style="text-align: right; font-size: 0.9rem;">
+                    <span class="text-green">Menggantikan: <span id="val-piket-hadir">0</span></span> &nbsp;|&nbsp; 
+            
+                    <span class="text-red">Digantikan: <span id="val-piket-ganti">0</span></span>
+                </div>
+            </div>
+            <div class="item-footer" style="margin-top:5px;">Data dari sheet "Piket"</div>
+        </div>
+            
+
+            <div class="card-item" id="row-rekap-kelas" style="display:none;">
+                <div class="item-header">
+                    <span class="item-title" id="label-rekap-kelas">Rekap Kehadiran</span>
+                    <span class="item-value" id="val-rekap-kelas">0%</span>
+                </div>
+                <div class="bar-track">
+                    <div class="bar-fill" id="bar-rekap-kelas" style="width: 0%; background-color: #3498db;"></div>
+                </div>
+                <div class="item-header" style="margin-bottom:0; margin-top:5px;">
+                    <span class="item-footer">Rata-rata kehadiran siswa</span>
+                    <span class="item-footer" id="detail-rekap-kelas">-</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+    <div id="modalBiodata" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Biodata Guru</h2>
+                <span class="close-btn" onclick="tutupBiodata()">&times;</span>
+            </div>
+
+                        
+            <div id="biodata-body">
+                <table class="bio-table">
+                    <tr><td class="bio-label">Nama Lengkap</td><td class="bio-val" id="bio-nama">-</td></tr>
+                    <tr><td class="bio-label">NIP / NIY</td><td class="bio-val" id="bio-nip">-</td></tr>
+                    <tr><td class="bio-label">NUPTK</td><td class="bio-val" id="bio-nuptk">-</td></tr>
+                    <tr><td class="bio-label">NIK</td><td class="bio-val" id="bio-nik">-</td></tr>
+                    <tr><td class="bio-label">Jabatan Utama</td><td class="bio-val" id="bio-jabatan">-</td></tr>
+                    <tr><td class="bio-label">Tugas Tambahan</td><td class="bio-val" id="bio-tugas">-</td></tr>
+                    <tr><td class="bio-label">Status Kepegawaian</td><td class="bio-val" id="bio-status">-</td></tr>
+                    <tr><td class="bio-label">TMT Sekolah</td><td class="bio-val" id="bio-tmt">-</td></tr>
+                    <tr><td class="bio-label">Sertifikasi</td><td class="bio-val" id="bio-sertifikasi">-</td></tr>
+                    <tr><td class="bio-label">Tempat/Tgl Lahir</td><td class="bio-val" id="bio-ttl">-</td></tr>
+                    <tr><td class="bio-label">Jenis Kelamin</td><td class="bio-val" id="bio-jk">-</td></tr>
+                    <tr><td class="bio-label">Agama</td><td class="bio-val" id="bio-agama">-</td></tr>
+                    <tr><td class="bio-label">Alamat Domisili</td><td class="bio-val" id="bio-alamat">-</td></tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <div class="footer">
+            &copy; 2026 aktechmaster | Designed & Developed by aktechmaster
+    </div>
+
+    <div id="modalPeringatan" class="modal">
+        <div class="modal-content" style="max-width: 400px; text-align: center;">
+            <span class="close-btn" onclick="tutupPeringatan()" style="position: absolute; right: 20px; top: 10px;">&times;</span>
+            
+            <div style="margin: 20px 0;">
+                <div style="width: 80px; height: 80px; background: #ffebee; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center;">
+                    <span style="font-size: 40px; color: #f44336;">🔒</span>
+                </div>
+            </div>
+
+            <h2 style="color: #333; margin-bottom: 10px;">Akses Dibatasi</h2>
+            <p style="color: #666; font-size: 1.1em; line-height: 1.5;">
+                Maaf, menu ini khusus untuk<br>
+                <strong>Wali Kelas</strong> & <strong>Wakil Wali Kelas</strong>.
+            </p>
+            
+            <button onclick="tutupPeringatan()" style="background: #f44336; color: white; border: none; padding: 10px 25px; border-radius: 20px; font-size: 1em; margin-top: 20px; cursor: pointer; transition: 0.3s;">
+                Mengerti
+            </button>
+        </div>
+    </div>
+
+    <div id="infoPopup" class="custom-popup">
+    <div class="popup-box">
+        <div id="popup-icon" class="popup-icon-box">ℹ️</div>
+        <h3 id="popup-title" style="color: #333; margin-bottom: 10px;">Judul</h3>
+        <p id="popup-message" style="color: #666; line-height: 1.5;">Pesan...</p>
+        <button class="btn-popup-ok" onclick="closeInfoPopup()">Siap!</button>
+    </div>
+</div>
+
+<div id="modalJadwal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 id="judul-jadwal">Jadwal Hari Ini</h2>
+            <span class="close-btn" onclick="tutupJadwal()">&times;</span>
+        </div>
+        
+        <div class="modal-body" style="padding: 15px;">
+            <div style="text-align: center; margin-bottom: 20px;">
+                <h3 id="info-hari" style="margin: 0; color: #2c3e50;">-</h3>
+                <p style="font-size: 0.9em; color: #7f8c8d;">Daftar jam mengajar Anda</p>
+            </div>
+
+            <ul id="list-jadwal" style="list-style: none; padding: 0; margin: 0;">
+                </ul>
+
+            <div id="jadwal-kosong" style="display:none; text-align:center; margin-top:30px; color:#95a5a6;">
+                <i class="fas fa-mug-hot" style="font-size: 3em; margin-bottom: 10px;"></i>
+                <p>Tidak ada jadwal mengajar hari ini.<br>Selamat beristirahat!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modalPassword" class="modal">
+    <div class="modal-content" style="max-width: 400px;">
+        <div class="modal-header">
+            <h2>Ganti Password</h2>
+            <span class="close-btn" onclick="tutupModalPassword()">&times;</span>
+        </div>
+        
+        <div style="padding: 20px 0; text-align: left;">
+            <p style="margin-bottom: 15px; color: #666; text-align: center;">
+                Silakan masukkan password baru Anda:
+            </p>
+
+            <div style="margin-bottom: 15px;">
+                <label style="font-weight: bold; font-size: 0.9em; color: #333;">Password Baru</label>
+                <input type="password" id="input-pass-baru" placeholder="Masukkan password baru..." 
+                       style="width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; margin-top: 5px;">
+            </div>
+
+            <div style="margin-bottom: 5px;">
+                <label style="font-weight: bold; font-size: 0.9em; color: #333;">Konfirmasi Password</label>
+                <input type="password" id="input-pass-konfirmasi" placeholder="Ketik ulang password tadi..." 
+                       style="width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; margin-top: 5px;">
+            </div>
+
+            <div style="height: 20px; margin-bottom: 10px;">
+                <small id="msg-beda-pass" style="color: red; display: none; font-size: 0.85em;">
+                    ❌ Password tidak sama!
+                </small>
+            </div>
+                
+            <button onclick="prosesUbahPassword()" class="btn-popup-ok" style="width: 100%; margin-top: 5px; padding: 12px; font-weight: bold;">
+                Simpan Password
+            </button>
+        </div>
+    </div>
+</div>
+
+    <script>
+
+        // Fungsi untuk memanggil Popup Cantik
+function showPopup(title, message, icon) {
+    document.getElementById('popup-title').innerText = title;
+    // Menggunakan innerText agar \n terbaca sebagai baris baru, atau gunakan innerHTML jika mau <br>
+    document.getElementById('popup-message').innerText = message;
+    document.getElementById('popup-icon').innerText = icon;
+    
+    // Gunakan flex agar posisi benar-benar di tengah layar
+    document.getElementById('infoPopup').style.display = 'flex'; 
+}
+
+function closeInfoPopup() {
+    document.getElementById('infoPopup').style.display = 'none';
+}
+
+        // Tutup popup jika klik di luar kotak (area gelap)
+        document.getElementById('infoPopup').addEventListener('click', function(e) {
+        if (e.target === this) {
+        closeInfoPopup();
+        }   
+        });
+
+        // ==========================================
+        // 1. KONFIGURASI & LOGIC MENU BARU
+        // ==========================================
+        
+        // --- LOGIC MENU DROPDOWN ---
+        function toggleMenu() {
+            document.getElementById("myDropdown").classList.toggle("show");
+        }
+
+        // Tutup menu jika user klik di luar menu
+        window.onclick = function(event) {
+            if (!event.target.matches('.dropbtn')) {
+                var dropdowns = document.getElementsByClassName("dropdown-content");
+                for (var i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
+                }
+            }
+            
+            // Logic tutup modal
+            const modalLaporan = document.getElementById("modalLaporan");
+            const modalBiodata = document.getElementById("modalBiodata");
+            const modalPeringatan = document.getElementById("modalPeringatan");
+            
+            if (event.target == modalLaporan) tutupLaporan();
+            if (event.target == modalBiodata) tutupBiodata();
+            if (event.target == modalPeringatan) tutupPeringatan();
+        }
+
+        // --- LOGIC SMART REFRESH ---
+        function manualRefresh() {
+        console.log("Melakukan refresh data manual...");
+    
+         // Kita panggil ulang fetchData
+         fetchData().then(() => {
+        // GANTI ALERT BIASA DENGAN POPUP BARU
+        showPopup("Berhasil!", "Data Dashboard sudah diperbarui ke versi terbaru.", "✅");
+         });
+        }
+
+        // ==========================================
+        // 2. KONFIGURASI API
+        // ==========================================
+        
+        const API_URL = "https://script.google.com/macros/s/AKfycbxwcnnV-yyqDxS8ta07bUhKXSKPfzwCB5UpFb5yOPrk-_g3arItbyKD9ugqvKUh9wFRNA/exec"; 
+
+        const namaGuru = localStorage.getItem('namaGuru'); 
+
+        if (!namaGuru) {
+            alert("Anda harus login terlebih dahulu!");
+            window.location.href = 'index.html';
+        } else {
+            document.getElementById('nama-guru').innerText = namaGuru;
+        }
+
+        let dataDariSpreadsheet = null;
+
+        async function fetchData() {
+            const loadingScreen = document.getElementById('loading-overlay');
+            loadingScreen.style.display = 'flex';
+
+            try {
+                console.log("Sedang mengambil data...");
+                const response = await fetch(API_URL);
+                const data = await response.json();
+                
+                dataDariSpreadsheet = data; 
+                console.log("Data berhasil diambil:", dataDariSpreadsheet);
+                
+                updateHeaderDashboard();
+
+            } catch (error) {
+                console.error("Gagal mengambil data:", error);
+                alert("Gagal terhubung ke Database. Cek koneksi internet.");
+            } finally {
+                setTimeout(() => {
+                    loadingScreen.style.display = 'none';
+                }, 500);
+            }
+        }
+
+        fetchData();
+        
+        // ==========================================
+// FUNGSI UPDATE HEADER & FOTO
+// ==========================================
+function updateHeaderDashboard() {
+    // 1. Cek Data
+    if (!dataDariSpreadsheet || !dataDariSpreadsheet.biodata[namaGuru]) {
+        document.getElementById('dash-jabatan').innerText = "Data Belum Tersedia";
+        return;
+    }
+    
+    // 2. Definisi Variabel 'bio' (Hanya hidup di dalam fungsi ini)
+    const bio = dataDariSpreadsheet.biodata[namaGuru];
+    
+    let teksJabatan = bio.jabatan || "-";
+    if(bio.tugasTambahan && bio.tugasTambahan !== "" && bio.tugasTambahan !== "-") {
+        teksJabatan = teksJabatan + " | " + bio.tugasTambahan;
+    }
+    document.getElementById('dash-jabatan').innerText = teksJabatan;
+    document.getElementById('dash-nip').innerText = "NIPY: " + (bio.nip || "-");
+
+    const imgElement = document.getElementById('dash-foto');
+    const defaultFoto = "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"; 
+
+    let rawLink = bio.foto; 
+
+    if (rawLink && rawLink.trim() !== "") {
+        if (rawLink.includes("drive.google.com")) {
+            const idMatch = rawLink.match(/\/d\/([a-zA-Z0-9_-]+)/) || rawLink.match(/id=([a-zA-Z0-9_-]+)/);
+            if (idMatch && idMatch[1]) {
+                imgElement.src = "https://drive.google.com/thumbnail?sz=w1000&id=" + idMatch[1];
+            } else {
+                imgElement.src = rawLink; 
+            }
+        } else {
+            imgElement.src = rawLink; 
+        }
+    } else {
+        imgElement.src = defaultFoto;
+    }
+
+    // ==========================================
+    // --- LOGIKA MENU KHUSUS WAKA ---
+    // ==========================================
+    
+    // Definisi tombol (ambil ID dari HTML yang baru dibuat)
+    const tombolAbsenKaryawan = document.getElementById('menu-absensi-karyawan');
+    const tombolNotulen = document.getElementById('menu-notulen-rapat');
+
+    // Kita gunakan variabel 'cekDataGuru' yang sudah ada logic-nya di bawah
+    // Tapi karena variabel 'cekDataGuru' didefinisikan sedikit ke bawah di kode asli Anda, 
+    // Kita buat ulang string pengecekannya di sini agar aman:
+    let stringCekJabatan = (bio.jabatan + " " + bio.tugasTambahan).toUpperCase();
+
+    // 1. Cek Waka Kurikulum
+    if (tombolAbsenKaryawan) {
+        if (stringCekJabatan.includes("KURIKULUM")) {
+            tombolAbsenKaryawan.style.display = "block";
+        } else {
+            tombolAbsenKaryawan.style.display = "none";
+        }
+    }
+
+    // 2. Cek Waka Humas
+    if (tombolNotulen) {
+        if (stringCekJabatan.includes("HUMAS")) {
+            tombolNotulen.style.display = "block";
+        } else {
+            tombolNotulen.style.display = "none";
+        }
+    }
+
+    // ==========================================
+    // --- LOGIKA MENU KHUSUS PIKET (WAKA KURIKULUM & PMA) ---
+    // ==========================================
+    
+    // 1. Ambil Elemen Menu Baru
+    const tombolInputPiket = document.getElementById('menu-input-piket');
+    const tombolLaporanPiket = document.getElementById('menu-laporan-piket');
+
+    // 2. Cek Jabatan (Waka Kurikulum ATAU PMA)
+    // Variabel 'stringCekJabatan' sudah didefinisikan di kode sebelumnya (baris atas fungsi ini)
+    // Jadi kita tinggal pakai saja.
+    
+    if (tombolInputPiket && tombolLaporanPiket) {
+        // Cek apakah string jabatan mengandung kata "KURIKULUM" atau "PMA"
+        if (stringCekJabatan.includes("KURIKULUM") || stringCekJabatan.includes("PMA")) {
+            tombolInputPiket.style.display = "block";
+            tombolLaporanPiket.style.display = "block";
+        } else {
+            tombolInputPiket.style.display = "none";
+            tombolLaporanPiket.style.display = "none";
+        }
+    }
+
+    // ==========================================
+    // --- LOGIKA MENU ABSENSI SISWA (KHUSUS WALI KELAS) ---
+    // ==========================================
+    
+    const tombolAbsensiSiswa = document.getElementById('menu-absensi-siswa');
+
+    if (tombolAbsensiSiswa) {
+        // Kita gunakan 'stringCekJabatan' yang sama.
+        // Logikanya: Jika jabatan mengandung kata "WALI KELAS", maka tampilkan.
+        // (Ini otomatis mencakup "WALI KELAS" dan "WAKIL WALI KELAS")
+        
+        if (stringCekJabatan.includes("WALI KELAS")) {
+            tombolAbsensiSiswa.style.display = "block";
+        } else {
+            tombolAbsensiSiswa.style.display = "none";
+        }
+    }
+
+    // ==========================================
+    // --- LOGIKA OTOMATIS MENU T2Q ---
+    // ==========================================
+
+    const tombolT2Q = document.getElementById('menu-t2q');
+
+    if (tombolT2Q) { 
+        let cekDataGuru = (bio.jabatan + " " + bio.tugasTambahan).toUpperCase();
+
+        if (cekDataGuru.includes("T2Q") || cekDataGuru.includes("TAHSIN") || cekDataGuru.includes("TAHFIDZ")) {
+            tombolT2Q.style.display = "block"; 
+        } else {
+            tombolT2Q.style.display = "none"; 
+        }
+    }
+
+    // ==========================================
+    // --- LOGIKA OTOMATIS MENU BPI ---
+    // (SEKARANG SUDAH DI DALAM FUNGSI, JADI BISA BACA 'bio')
+    // ==========================================
+    const tombolBPI = document.getElementById('menu-bpi');
+    
+    // Pastikan tombol ada DAN data statusBPI terbaca
+    if (tombolBPI && bio.statusBPI) {
+        // Cek apakah isinya "Iya" (trim spasi & huruf kecilkan biar aman)
+        if (bio.statusBPI.toString().trim().toLowerCase() === "iya") {
+            tombolBPI.style.display = "flex"; 
+        } else {
+            // Tambahan biar aman: kalau bukan "Iya", sembunyikan
+            tombolBPI.style.display = "none"; 
+        }
+    }
+
+} // <--- KURUNG KURAWAL PENUTUP FUNGSI UTAMA (JANGAN DIHAPUS, INI BATAS AKHIR)
+
+
+        // ==========================================
+        // LOGIKA CEK AKSES ABSENSI
+        // ==========================================
+        function cekAksesAbsensi() {
+            if (!dataDariSpreadsheet) {
+                alert("Data sedang dimuat... Mohon tunggu sebentar.");
+                return;
+            }
+
+            const bio = dataDariSpreadsheet.biodata[namaGuru];
+            let tugas = "";
+            if (bio && bio.tugasTambahan) {
+                tugas = bio.tugasTambahan.toLowerCase();
+            }
+
+            if (tugas.includes("wali kelas")) {
+                window.open("https://aktechmaster.github.io/Jurnal-Kehadiran-Siswa/");
+            } else {
+                document.getElementById("modalPeringatan").style.display = "block";
+            }
+        }
+
+        function tutupPeringatan() {
+            document.getElementById("modalPeringatan").style.display = "none";
+        }
+
+
+        // ============================================
+        // FUNGSI BUKA LAPORAN (VERSI TERBARU - 6 POIN)
+        // ============================================
+function bukaLaporan() {
+    // 1. Cek apakah data dari server sudah masuk
+    if (!dataDariSpreadsheet) {
+        showPopup("Loading", "Data sedang dimuat... Tunggu sebentar.", "⏳");
+        return;
+    }
+
+    const modal = document.getElementById("modalLaporan");
+    modal.style.display = "block";
+
+    // --- BAGIAN 1: JURNAL HARIAN ---
+    const dataHarian = dataDariSpreadsheet.jurnalHarian[namaGuru];
+    if (dataHarian) {
+        let target = parseInt(dataHarian.target) || 0;
+        let realisasi = parseInt(dataHarian.realisasi) || 0;
+        let persen = 0;
+        if (target > 0) persen = Math.round((realisasi / target) * 100);
+        else if (target === 0 && realisasi === 0) persen = 100;
+
+        document.getElementById("val-jurnal-harian").innerText = persen + "% (" + realisasi + "/" + target + ")";
+        document.getElementById("bar-jurnal-harian").style.width = persen + "%";
+        document.getElementById("bar-jurnal-harian").style.background = (persen >= 100) ? "#2ecc71" : "#00c6ff";
+    } else {
+        document.getElementById("val-jurnal-harian").innerText = "Data Kosong";
+        document.getElementById("bar-jurnal-harian").style.width = "0%";
+    }
+
+    // --- BAGIAN 2: JURNAL BULANAN ---
+    const dataBulanan = dataDariSpreadsheet.jurnalBulanan[namaGuru];
+    if (dataBulanan) {
+        let target = parseInt(dataBulanan.target) || 0;
+        let realisasi = parseInt(dataBulanan.realisasi) || 0;
+        let persen = 0;
+        if (target > 0) persen = Math.round((realisasi / target) * 100);
+
+        document.getElementById("val-jurnal-bulanan").innerText = persen + "% (" + realisasi + "/" + target + ")";
+        document.getElementById("bar-jurnal-bulanan").style.width = persen + "%";
+    } else {
+        document.getElementById("val-jurnal-bulanan").innerText = "-";
+        document.getElementById("bar-jurnal-bulanan").style.width = "0%";
+    }
+
+    // --- BAGIAN 3: PIKET ---
+    const dataPiket = dataDariSpreadsheet.piket[namaGuru];
+    if (dataPiket) {
+        document.getElementById("val-piket-hadir").innerText = (dataPiket.hadir || 0) + " Kali";
+        document.getElementById("val-piket-ganti").innerText = (dataPiket.digantikan || 0) + " Kali";
+    } else {
+        document.getElementById("val-piket-hadir").innerText = "0 Kali";
+        document.getElementById("val-piket-ganti").innerText = "0 Kali";
+    }
+
+    // --- BAGIAN 4: ABSENSI ---
+    const dataAbsen = dataDariSpreadsheet.absensi[namaGuru];
+    if (dataAbsen) {
+        let jumlah = dataAbsen.jumlah || 0;
+        document.getElementById("val-absensi").innerText = jumlah + " Hari";
+        document.getElementById("val-absensi").style.color = (jumlah > 10) ? "#c0392b" : "#2c3e50";
+    } else {
+        document.getElementById("val-absensi").innerText = "0 Hari";
+    }
+
+    // ==========================================
+    // BAGIAN 5 (STATUS INPUT) & 6 (REKAP KELAS)
+    // ==========================================
+    
+    const infoGuru = dataDariSpreadsheet.biodata[namaGuru];
+    const divInput = document.getElementById('card-status-input'); // Kotak 5
+    const divRekap = document.getElementById('row-rekap-kelas');   // Kotak 6
+    
+    // Sembunyikan dulu (reset)
+    if(divInput) divInput.style.display = 'none';
+    if(divRekap) divRekap.style.display = 'none';
+
+    // Pastikan data biodata guru & rekap kelas tersedia
+    if (infoGuru && dataDariSpreadsheet.rekapKelas) {
+        
+        // Logika Pencarian Kelas (Cerdas)
+        const stringPencarian = (infoGuru.jabatan + " " + infoGuru.tugasTambahan).toUpperCase();
+        const daftarKelas = Object.keys(dataDariSpreadsheet.rekapKelas);
+        
+        let kelasDitemukan = null;
+        let dataKelas = null;
+
+        for (let i = 0; i < daftarKelas.length; i++) {
+            let namaKelasCek = daftarKelas[i];
+            // Cek apakah tugas guru mengandung nama kelas ini
+            if (stringPencarian.includes(namaKelasCek)) {
+                kelasDitemukan = namaKelasCek;
+                dataKelas = dataDariSpreadsheet.rekapKelas[namaKelasCek];
+                break;
+            }
+        }
+
+        // JIKA WALI KELAS DITEMUKAN
+        if (kelasDitemukan && dataKelas) {
+            
+            // --- KOTAK 5: STATUS INPUT HARI INI ---
+            if(divInput) {
+                divInput.style.display = 'block';
+                
+                // Ambil data jumlahInput (dari server kolom C)
+                let jumlahIsi = parseInt(dataKelas.jumlahInput) || 0; 
+                
+                const elStatusVal = document.getElementById('status-input-val');
+                const elStatusMsg = document.getElementById('status-input-msg');
+                const elCardInput = document.getElementById('card-status-input');
+
+                if (jumlahIsi === 0) {
+                    elStatusVal.innerText = "BELUM MENGISI";
+                    elStatusVal.style.color = "#e74c3c"; // Merah
+                    elStatusMsg.innerText = "Anda belum mengisi kehadiran siswa hari ini.";
+                    elCardInput.style.borderLeftColor = "#e74c3c"; 
+                } else if (jumlahIsi === 1) {
+                    elStatusVal.innerText = "SUDAH MENGISI";
+                    elStatusVal.style.color = "#27ae60"; // Hijau
+                    elStatusMsg.innerText = "Terima kasih, data kehadiran hari ini aman.";
+                    elCardInput.style.borderLeftColor = "#27ae60";
+                } else {
+                    elStatusVal.innerText = "DOUBLE INPUT (" + jumlahIsi + ")";
+                    elStatusVal.style.color = "#f39c12"; // Oranye
+                    elStatusMsg.innerText = "Anda mengisi lebih dari 1 jurnal kelas hari ini.";
+                    elCardInput.style.borderLeftColor = "#f39c12";
+                }
+            }
+
+            // --- KOTAK 6: REKAP KELAS ---
+            if(divRekap) {
+                divRekap.style.display = 'block';
+                document.getElementById('label-rekap-kelas').textContent = "Rekap Kehadiran " + kelasDitemukan;
+                
+                var teksTampil = dataKelas.tampilan || "0%";
+                var lebarBar = dataKelas.persen || "0%";
+
+                document.getElementById('val-rekap-kelas').textContent = teksTampil;
+                document.getElementById('bar-rekap-kelas').style.width = lebarBar;
+
+                // Warna Bar
+                if (parseFloat(lebarBar) < 75) {
+                    document.getElementById('bar-rekap-kelas').style.backgroundColor = "#e74c3c"; // Merah
+                    document.getElementById('detail-rekap-kelas').textContent = "Perlu Perhatian";
+                } else {
+                    document.getElementById('bar-rekap-kelas').style.backgroundColor = "#27ae60"; // Hijau
+                    document.getElementById('detail-rekap-kelas').textContent = "Sangat Baik";
+                }
+            }
+        }
+    }
+}
+
+function tutupLaporan() {
+    document.getElementById("modalLaporan").style.display = "none";
+}
+        // ==========================================
+        // LOGIKA TAMPILAN BIODATA
+        // ==========================================
+
+        function bukaBiodata() {
+            if (!dataDariSpreadsheet) {
+                alert("Data sedang dimuat... Tunggu sebentar lalu coba lagi.");
+                return;
+            }
+
+            const modal = document.getElementById("modalBiodata");
+            modal.style.display = "block";
+
+            const bio = dataDariSpreadsheet.biodata[namaGuru];
+            document.getElementById("bio-nama").innerText = namaGuru; 
+
+            if (bio) {
+                const formatTanggal = (strTgl) => {
+                    if(!strTgl) return "-";
+                    let date = new Date(strTgl);
+                    if(isNaN(date)) return strTgl; 
+                    return date.toLocaleDateString('id-ID', {day: 'numeric', month: 'long', year: 'numeric'});
+                };
+
+                document.getElementById("bio-nip").innerText = bio.nip || "-";
+                document.getElementById("bio-nuptk").innerText = bio.nuptk || "-";
+                document.getElementById("bio-nik").innerText = bio.nik || "-";
+                document.getElementById("bio-jabatan").innerText = bio.jabatan || "-";
+                document.getElementById("bio-tugas").innerText = bio.tugasTambahan || "-";
+                document.getElementById("bio-status").innerText = bio.statusPegawai || "-";
+                document.getElementById("bio-tmt").innerText = formatTanggal(bio.tmt);
+                document.getElementById("bio-sertifikasi").innerText = bio.sertifikasi || "-";
+                
+                let ttl = (bio.tempatLahir || "") + ", " + formatTanggal(bio.tglLahir);
+                document.getElementById("bio-ttl").innerText = ttl;
+                
+                document.getElementById("bio-jk").innerText = bio.jk || "-";
+                document.getElementById("bio-agama").innerText = bio.agama || "-";
+                document.getElementById("bio-alamat").innerText = bio.alamat || "-";
+            } else {
+                document.getElementById("bio-nip").innerText = "Data Belum Tersedia";
+                document.getElementById("bio-nuptk").innerText = "-";
+            }
+        }
+
+        function tutupBiodata() {
+            document.getElementById("modalBiodata").style.display = "none";
+        }
+
+        function logout() {
+            localStorage.removeItem('namaGuru');
+            window.location.href = 'index.html';
+        }
+
+        function showDate() {
+            const dateElement = document.getElementById('display-tanggal');
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const today = new Date();
+            dateElement.innerText = today.toLocaleDateString('id-ID', options);
+        }
+
+        showDate();
+
+
+// ==========================================
+// LOGIKA JADWAL MENGAJAR (Paste di dalam <script>)
+// ==========================================
+
+function bukaJadwalMengajar() {
+    // 1. Cek apakah data sudah siap
+    if (!dataDariSpreadsheet) {
+        showPopup("Mohon Tunggu", "Data sedang diambil dari server...", "⏳");
+        return;
+    }
+
+    const modal = document.getElementById("modalJadwal");
+    const listContainer = document.getElementById("list-jadwal");
+    const divKosong = document.getElementById("jadwal-kosong");
+    const judulHari = document.getElementById("info-hari");
+    const judulModal = document.getElementById("judul-jadwal");
+
+    // 2. Tentukan Hari Ini Secara Otomatis
+    const hariIndo = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+    const tgl = new Date();
+    const namaHari = hariIndo[tgl.getDay()]; // Contoh: "Senin"
+    
+    // DEBUG: Jika ingin ngetes hari lain, ganti baris di bawah ini:
+    // const namaHari = "Senin"; 
+
+    // Tampilkan Modal
+    modal.style.display = "block";
+    judulModal.innerText = "Jadwal " + namaHari;
+    judulHari.innerText = namaHari + ", " + tgl.toLocaleDateString('id-ID');
+    listContainer.innerHTML = ""; // Bersihkan isi lama
+
+    // 3. Ambil Data Jadwal Guru Tersebut
+    // Pastikan key 'jadwalMengajar' sesuai dengan yang ada di Google Apps Script
+    const dataJadwalGuru = dataDariSpreadsheet.jadwalMengajar && dataDariSpreadsheet.jadwalMengajar[namaGuru];
+
+    // Cek apakah ada jadwal di hari tersebut
+    if (dataJadwalGuru && dataJadwalGuru[namaHari] && dataJadwalGuru[namaHari].length > 0) {
+        divKosong.style.display = "none";
+        
+        // Loop setiap jam pelajaran
+        dataJadwalGuru[namaHari].forEach(function(mapel) {
+            let li = document.createElement("li");
+            
+            // Styling kartu jadwal biar cantik
+            li.style.background = "#fff";
+            li.style.borderLeft = "5px solid #3498db"; // Garis biru di kiri
+            li.style.marginBottom = "10px";
+            li.style.padding = "12px";
+            li.style.borderRadius = "5px";
+            li.style.boxShadow = "0 2px 5px rgba(0,0,0,0.05)";
+            li.style.display = "flex";
+            li.style.alignItems = "center";
+            
+            // Isi Konten
+            li.innerHTML = `
+                <div style="margin-right: 15px; color: #3498db;">
+                    <i class="far fa-clock fa-lg"></i>
+                </div>
+                <div>
+                    <span style="font-weight:600; color:#2c3e50; font-size:1.05em;">${mapel}</span>
+                </div>
+            `;
+            
+            listContainer.appendChild(li);
+        });
+
+    } else {
+        // Jika hari libur atau tidak ada jadwal
+        divKosong.style.display = "block";
+    }
+}
+
+function tutupJadwal() {
+    document.getElementById("modalJadwal").style.display = "none";
+}
+
+// Tambahkan listener agar bisa tutup modal saat klik area gelap
+window.addEventListener('click', function(e) {
+    const modalJadwal = document.getElementById("modalJadwal");
+    if (e.target == modalJadwal) {
+        tutupJadwal();
+    }
+});
+
+// ==========================================
+// LOGIKA UBAH PASSWORD (Tambahkan di script paling bawah)
+// ==========================================
+
+function bukaModalPassword() {
+    document.getElementById("modalPassword").style.display = "block";
+    document.getElementById("input-pass-baru").value = ""; // Reset input
+}
+
+function tutupModalPassword() {
+    document.getElementById("modalPassword").style.display = "none";
+}
+
+// Tutup jika klik area gelap
+window.addEventListener('click', function(e) {
+    if (e.target == document.getElementById("modalPassword")) {
+        tutupModalPassword();
+    }
+});
+
+function prosesUbahPassword() {
+    // 1. AMBIL ELEMENT
+    const elPassBaru = document.getElementById("input-pass-baru");
+    const elPassKonfirmasi = document.getElementById("input-pass-konfirmasi");
+    const elMsgError = document.getElementById("msg-beda-pass");
+    const namaGuru = localStorage.getItem('namaGuru'); 
+
+    // 2. VALIDASI KOSONG
+    if (!elPassBaru.value || elPassBaru.value.trim() === "") {
+        showPopup("Gagal", "Password baru tidak boleh kosong!", "❌");
+        return;
+    }
+
+    // 3. VALIDASI KECOCOKAN (INI YANG PENTING)
+    if (elPassBaru.value !== elPassKonfirmasi.value) {
+        // Munculkan pesan merah di HTML
+        if(elMsgError) elMsgError.style.display = 'block';
+        
+        // Munculkan Popup Error
+        showPopup("Gagal", "Password tidak sama! Cek ketikan Anda.", "❌");
+        
+        // Reset kolom konfirmasi
+        elPassKonfirmasi.value = "";
+        elPassKonfirmasi.focus();
+        return; // BERHENTI (Jangan kirim ke server)
+    } else {
+        // Sembunyikan pesan merah jika sudah benar
+        if(elMsgError) elMsgError.style.display = 'none';
+    }
+
+    // --- KIRIM KE SERVER ---
+    document.getElementById('loading-overlay').style.display = 'flex';
+    tutupModalPassword();
+
+    const formData = new FormData();
+    formData.append('action', 'ubahPassword');
+    formData.append('nama', namaGuru);
+    formData.append('password', elPassBaru.value);
+
+    fetch(API_URL, { // Pastikan variabel API_URL benar
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        document.getElementById('loading-overlay').style.display = 'none';
+        if (data.status === "sukses") {
+            showPopup("Berhasil", "Password diganti! Logout otomatis...", "✅");
+            setTimeout(() => {
+                localStorage.clear();
+                window.top.location.href = 'index.html'; // Balik ke login
+            }, 3000); 
+        } else {
+            showPopup("Gagal", data.pesan || "Gagal mengubah password.", "⚠️");
+        }
+    })
+    .catch(error => {
+        document.getElementById('loading-overlay').style.display = 'none';
+        showPopup("Error", "Gagal koneksi server.", "🚫");
+    });
+}
+        
+    </script>
+
+    
+</body>
+
+</html>
