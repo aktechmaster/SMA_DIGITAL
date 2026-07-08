@@ -890,6 +890,117 @@
     </div>
 </div>
 
+    <div id="modalRincianJurnal" class="modal" style="display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.6); backdrop-filter: blur(3px);">
+    <div class="modal-content" style="background-color: #fff; margin: 5% auto; padding: 25px; border-radius: 12px; width: 90%; max-width: 500px; box-shadow: 0 10px 25px rgba(0,0,0,0.3); position: relative;">
+        <span onclick="tutupRincianJurnal()" style="color: #7f8c8d; position: absolute; right: 20px; top: 15px; font-size: 28px; font-weight: bold; cursor: pointer; transition: 0.3s;">&times;</span>
+        
+        <h3 style="margin-bottom: 5px; color: #2c3e50; font-size: 1.3em;">Rekap Bulanan Jurnal</h3>
+        <p id="nama-guru-jurnal" style="margin-bottom: 20px; color: #16a085; font-weight: 600; font-size: 0.95em;"></p>
+        
+        <div style="overflow-x: auto;">
+            <table style="width: 100%; border-collapse: collapse; text-align: center; font-size: 0.9em;">
+                <thead>
+                    <tr style="background: linear-gradient(to right, #00c6ff, #0072ff); color: white;">
+                        <th style="padding: 12px 8px; border: 1px solid #ddd; border-top-left-radius: 8px;">Bulan</th>
+                        <th style="padding: 12px 8px; border: 1px solid #ddd;">Wajib Diisi</th>
+                        <th style="padding: 12px 8px; border: 1px solid #ddd;">Realisasi</th>
+                        <th style="padding: 12px 8px; border: 1px solid #ddd; border-top-right-radius: 8px;">Persen</th>
+                    </tr>
+                </thead>
+                <tbody id="tabel-body-jurnal">
+                    </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+    <div id="modalDetailAbsensi" class="modal-overlay" style="display: none;">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3 id="judulDetailKelas">Detail Kehadiran</h3>
+      <span class="close-btn" onclick="tutupDetailAbsensi()">&times;</span>
+    </div>
+    
+    <div class="modal-body-table">
+      <table class="tabel-keren">
+        <thead>
+          <tr>
+            <th style="text-align: left;">Nama Siswa</th>
+            <th>H</th>
+            <th>S</th>
+            <th>I</th>
+            <th>A</th>
+            <th>%</th>
+          </tr>
+        </thead>
+        <tbody id="isiTabelAbsensi">
+          </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<style>
+/* REVISI CSS: Z-INDEX 9999 AGAR MUNCUL PALING DEPAN */
+.modal-overlay {
+  position: fixed;
+  z-index: 9999 !important; /* PENTING: Agar menimpa popup lain */
+  left: 0; top: 0;
+  width: 100%; height: 100%;
+  background-color: rgba(0,0,0,0.6);
+  display: flex; /* Flexbox untuk tengah */
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(2px); /* Efek blur biar fokus */
+}
+
+.modal-box {
+  background-color: #fff;
+  width: 90%;
+  max-width: 600px;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+  overflow: hidden;
+  animation: slideDown 0.3s ease-out;
+  position: relative; /* Agar z-index bekerja stabil */
+}
+
+.modal-header {
+  background-color: #3498db;
+  color: white;
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.close-btn {
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+  color: #fff;
+  line-height: 1;
+}
+.close-btn:hover { color: #ffebee; }
+
+.modal-body-table {
+  padding: 0;
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.tabel-keren { width: 100%; border-collapse: collapse; font-size: 14px; }
+.tabel-keren th { background-color: #f1f2f6; position: sticky; top: 0; z-index: 10; padding: 12px; text-align:center;}
+.tabel-keren td { padding: 10px; border-bottom: 1px solid #eee; text-align: center; }
+.badge-merah { background-color: #ffebee; color: #c0392b; padding: 4px 8px; border-radius: 4px; font-weight: bold; }
+.badge-hijau { background-color: #e8f8f5; color: #27ae60; padding: 4px 8px; border-radius: 4px; font-weight: bold; }
+
+@keyframes slideDown {
+  from {transform: translateY(-30px); opacity: 0;}
+  to {transform: translateY(0); opacity: 1;}
+}
+</style>
+
     <script>
 
         // Fungsi untuk memanggil Popup Cantik
@@ -1559,6 +1670,135 @@ function prosesUbahPassword() {
         showPopup("Error", "Gagal koneksi server.", "🚫");
     });
 }
+
+        // === FUNGSI POPUP ABSENSI (FINAL FIX) ===
+function bukaPopupAbsensi() {
+    // 1. Ambil Nama Kelas
+    var kelas = window.kelasAktif;
+    if (!kelas) {
+        try {
+            var label = document.getElementById('label-rekap-kelas').textContent;
+            kelas = label.replace("Rekap Kehadiran ", "").trim();
+        } catch (e) {}
+    }
+
+    if (!kelas) { alert("Kelas tidak ditemukan. Refresh halaman."); return; }
+
+    // 2. Tampilkan Popup (Dengan CSS Z-Index Baru)
+    var modal = document.getElementById('modalDetailAbsensi');
+    modal.style.display = 'flex'; // Pakai flex agar di tengah
+    document.getElementById('judulDetailKelas').innerText = "Detail: " + kelas;
+    var tbody = document.getElementById('isiTabelAbsensi');
+    tbody.innerHTML = '<tr><td colspan="6" style="padding:20px; text-align:center;">Sedang mengambil data... <br>⏳ Mohon tunggu...</td></tr>';
+
+    // 3. URL SCRIPT (PASTIKAN SUDAH DEPLOY NEW VERSION & AKSES ANYONE)
+    // TEMPEL URL ANDA DI BAWAH INI ANTARA DUA TANDA KUTIP:
+    var urlTujuan = "https://script.google.com/macros/s/AKfycbywDwr563TLOsInFhDDyH5-PgU2Z6f_xPhVsl_pLKfyq-dzxw4sgHaJ5nRW-I4JJ4Ds/exec"; 
+
+    // 4. Fetch Data
+    var fullUrl = urlTujuan + "?action=getRekapDetail&kelas=" + encodeURIComponent(kelas);
+    
+    fetch(fullUrl)
+    .then(res => res.json())
+    .then(data => {
+        var html = '';
+        if (!data || data.length === 0) {
+             html = '<tr><td colspan="6" style="padding:20px; text-align:center;">Data siswa kosong.</td></tr>';
+        } else {
+            data.forEach(siswa => {
+                var strPersen = String(siswa.persen).replace('%','').replace(',','.');
+                var nilai = parseFloat(strPersen);
+                if (nilai <= 1 && nilai > 0) { nilai = nilai * 100; } // Handle desimal 0.5 -> 50%
+                if (isNaN(nilai)) nilai = 0;
+
+                var warna = (nilai < 80) ? 'badge-merah' : 'badge-hijau';
+                
+                html += `
+                <tr>
+                    <td style="text-align:left; font-weight:500;">${siswa.nama}</td>
+                    <td>${siswa.h}</td>
+                    <td>${siswa.s}</td>
+                    <td>${siswa.i}</td>
+                    <td>${siswa.a}</td>
+                    <td><span class="${warna}">${Math.round(nilai)}%</span></td>
+                </tr>`;
+            });
+        }
+        tbody.innerHTML = html;
+    })
+    .catch(error => {
+        console.error(error);
+        tbody.innerHTML = '<tr><td colspan="6" style="color:red; padding:20px; text-align:center;">' +
+            'Gagal mengambil data.<br><br>' + 
+            '<small>Tips: Pastikan Script sudah di-Deploy sebagai <b>"New Version"</b><br>' +
+            'dan Akses diatur ke <b>"Anyone (Siapa Saja)"</b>.</small></td></tr>';
+    });
+}
+
+// Fungsi Tutup (Pastikan ini ada)
+function tutupDetailAbsensi() {
+    document.getElementById('modalDetailAbsensi').style.display = 'none';
+}
+
+// ==========================================
+// FUNGSI RINCIAN JURNAL BULANAN
+// ==========================================
+function bukaRincianJurnal() {
+    // 1. Pastikan data sudah ditarik dari server
+    if (!dataDariSpreadsheet || !dataDariSpreadsheet.rincianJurnal) {
+        showPopup("Data Belum Siap", "Data rincian jurnal sedang dimuat atau belum tersedia.", "⏳");
+        return;
+    }
+
+    // 2. Ambil data spesifik untuk guru yang login
+    const dataRincian = dataDariSpreadsheet.rincianJurnal[namaGuru];
+    const tbody = document.getElementById("tabel-body-jurnal");
+    
+    // 3. Reset isi tabel dan tulis nama guru
+    tbody.innerHTML = ""; 
+    document.getElementById("nama-guru-jurnal").innerText = namaGuru;
+
+    // 4. Jika datanya ada, susun baris tabelnya
+    if (dataRincian && dataRincian.length > 0) {
+        dataRincian.forEach((item, index) => {
+            // Efek belang-belang pada baris tabel agar mudah dibaca
+            const bgRow = index % 2 === 0 ? "#f9f9f9" : "#ffffff";
+            
+            // Logika warna untuk kolom persen
+            let angkaPersen = parseFloat(item.persen.replace(',', '.'));
+            let warnaPersen = (angkaPersen >= 100) ? "#27ae60" : (angkaPersen > 0 ? "#e67e22" : "#e74c3c");
+
+            const tr = document.createElement("tr");
+            tr.style.backgroundColor = bgRow;
+            
+            tr.innerHTML = `
+                <td style="padding: 10px 8px; border: 1px solid #ddd; font-weight: 500;">${item.bulan}</td>
+                <td style="padding: 10px 8px; border: 1px solid #ddd;">${item.wajib}</td>
+                <td style="padding: 10px 8px; border: 1px solid #ddd;">${item.realisasi}</td>
+                <td style="padding: 10px 8px; border: 1px solid #ddd; color: ${warnaPersen}; font-weight: bold;">${item.persen}</td>
+            `;
+            tbody.appendChild(tr);
+        });
+    } else {
+        // Jika belum ada data sama sekali
+        tbody.innerHTML = "<tr><td colspan='4' style='padding: 20px; color: #7f8c8d;'>Belum ada data jurnal untuk ditampilkan.</td></tr>";
+    }
+
+    // 5. Tampilkan pop-up modalnya
+    document.getElementById("modalRincianJurnal").style.display = "block";
+}
+
+function tutupRincianJurnal() {
+    document.getElementById("modalRincianJurnal").style.display = "none";
+}
+
+// Opsional: Tutup modal saat klik area luar (gelap)
+window.addEventListener('click', function(event) {
+    const modalRincian = document.getElementById("modalRincianJurnal");
+    if (event.target === modalRincian) {
+        tutupRincianJurnal();
+    }
+});
         
     </script>
 
