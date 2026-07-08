@@ -757,7 +757,9 @@
                     <div class="bar-fill" id="bar-rekap-kelas" style="width: 0%; background-color: #3498db;"></div>
                 </div>
                 <div class="item-header" style="margin-bottom:0; margin-top:5px;">
-                    <span class="item-footer">Rata-rata kehadiran siswa</span>
+                    <a href="#" onclick="bukaPopupAbsensi(); return false;" style="font-size: 0.85em; font-weight: bold; color: #3498db; text-decoration: none;">
+                    Lihat Rincian &raquo;
+                    </a>
                     <span class="item-footer" id="detail-rekap-kelas">-</span>
                 </div>
             </div>
@@ -1329,6 +1331,32 @@ function bukaLaporan() {
         document.getElementById("val-jurnal-bulanan").innerText = "-";
         document.getElementById("bar-jurnal-bulanan").style.width = "0%";
     }
+
+    // =========================================================
+// CODES BARU: SUNTIK TOMBOL "LIHAT RINCIAN" SECARA DINAMIS
+// =========================================================
+const cardJurnal = document.getElementById("val-jurnal-bulanan").closest('.card-item');
+if (cardJurnal) {
+    // Kita cek dulu, kalau tombolnya belum ada, baru kita buat (biar gak duplikat saat di-refresh)
+    if (!cardJurnal.querySelector('.btn-rincian-jurnal')) {
+        const linkRincian = document.createElement('a');
+        linkRincian.className = 'btn-rincian-jurnal';
+        linkRincian.href = '#';
+        linkRincian.innerText = 'Lihat Rincian »';
+        
+        // Atur gaya tampilan tombol agar rapi
+        linkRincian.style.cssText = 'color: #3498db; text-decoration: none; font-size: 0.9em; display: inline-block; margin-top: 10px; font-weight: bold; cursor: pointer;';
+        
+        // Hubungkan fungsi kliknya ke popup rincian jurnal
+        linkRincian.onclick = function(e) {
+            e.preventDefault();
+            bukaRincianJurnal();
+        };
+        
+        // Masukkan tombol ke dalam kotak secara paksa
+        cardJurnal.appendChild(linkRincian);
+    }
+}
 
     // --- BAGIAN 3: PIKET ---
     const dataPiket = dataDariSpreadsheet.piket[namaGuru];
