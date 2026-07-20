@@ -1,0 +1,23 @@
+{
+  "short_name": "DIGITAL SMA",
+  "name": "Dashboar Informasi Guru Islam Terpadu Al-Kautsar",
+  "icons": [
+    {
+      "src": "logosmpit.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "logosmpit.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#ffffff",
+  "theme_color": "#007bff",
+  "display": "standalone",
+  "orientation": "portrait"
+}
